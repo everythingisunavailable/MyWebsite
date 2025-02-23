@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>three-js</title>
     <style>
-        body{margin: 0;}
-        canvas{background-color: transparent;}
+        body{margin: 0; background-color: rgb(26, 26, 26);}
+        canvas{background-color: transparent; z-index: 100;}
+        .drone_light{position: absolute; box-shadow: 0 0 100px 50px blue; z-index: -100;}
     </style>
     <script type="importmap">
         {
@@ -17,8 +18,8 @@
     </script>
 </head>
 <body>
+    <div class="drone_light"></div>
     
     <script type="module" src="main.js"></script>
-    <script src="event_listener.js"></script>
 </body>
 </html>
