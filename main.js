@@ -65,7 +65,7 @@ class Drone {
             emissive: 0x0033ff, // Deep blue glow
             emissiveIntensity: 2,
             transparent: true, 
-            opacity: 0.8 
+            opacity: 0.5 
         });
         this.flame = new THREE.Mesh(geometry, material);
         this.flame.rotation.x = Math.PI;
