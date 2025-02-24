@@ -1,0 +1,16 @@
+
+body{
+    margin: 0; 
+    background-color: rgb(26, 26, 26);
+}
+
+canvas{
+    background-color: transparent;
+    z-index: 100;
+}
+.drone_light{
+    position: absolute;
+    box-shadow: 0 0 10vw 5vw rgb(116, 116, 245);
+    transform: translateY(5vw);
+    z-index: -100;
+}

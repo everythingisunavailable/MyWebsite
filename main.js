@@ -39,6 +39,7 @@ class Drone {
     x;
     y;
     z;
+    speed;
 
     direction = {
         a: false, // Left
@@ -51,6 +52,7 @@ class Drone {
         this.x = 0;
         this.y = 0;
         this.z = 0;
+        this.speed = 0.2;
         this.animation_frames = 16;
         this.count = 0;
         this.reverse = false;
@@ -65,7 +67,7 @@ class Drone {
             emissive: 0x0033ff, // Deep blue glow
             emissiveIntensity: 2,
             transparent: true, 
-            opacity: 0.5 
+            opacity: 0.2 
         });
         this.flame = new THREE.Mesh(geometry, material);
         this.flame.rotation.x = Math.PI;
@@ -73,6 +75,7 @@ class Drone {
 
         loader.load('public/drone.glb', (gltf) => {
             this.drone = gltf.scene; 
+            this.drone.scale.set(aspect, aspect, aspect);
             this.drone.position.set(this.x, this.y, this.z); 
             scene.add(this.drone); 
             this.drone.add(this.flame);
@@ -84,10 +87,10 @@ class Drone {
     // Example method to move the drone
     move() {
 
-        if (this.direction.a && !this.collides()) this.x -= 0.1; // Move left
-        if (this.direction.d && !this.collides()) this.x += 0.1; // Move right
-        if (this.direction.w && !this.collides()) this.y += 0.1; // Move up
-        if (this.direction.s && !this.collides()) this.y -= 0.1; // Move down
+        if (this.direction.a && !this.collides()) this.x -= this.speed; // Move left
+        if (this.direction.d && !this.collides()) this.x += this.speed; // Move right
+        if (this.direction.w && !this.collides()) this.y += this.speed; // Move up
+        if (this.direction.s && !this.collides()) this.y -= this.speed; // Move down
         
         // Update the drone's position
         if (this.drone) {
@@ -111,7 +114,7 @@ class Drone {
                 this.flame.position.y += 0.01;
                 this.count++;
                 if (this.count >= this.animation_frames) {
-                    this.flame.material.opacity = 0.5 + Math.random() * 0.3;
+                    this.flame.material.opacity = 0.2 + Math.random() * 0.2;
                     this.count = 0;
                     this.reverse = true;
                 }
@@ -120,7 +123,7 @@ class Drone {
                 this.flame.position.y -= 0.01;
                 this.count++;
                 if (this.count >= this.animation_frames) {
-                    this.flame.material.opacity = 0.5 + Math.random() * 0.3;
+                    this.flame.material.opacity = 0.2 + Math.random() * 0.2;
                     this.count = 0;
                     this.reverse = false;
                 }
@@ -131,14 +134,13 @@ class Drone {
     collides(){
         if(this.x < LEFT * aspect){ this.x = LEFT * aspect; return true;}
         if(this.x > RIGHT * aspect){ this.x = RIGHT * aspect; return true;}
-        if(this.y < BOTTOM){ this.y = BOTTOM; return true;}
-        if(this.y > TOP){ this.y = TOP; return true;}
         return false;
     }
 }
 
 
 let drone = new Drone(scene);
+
 window.addEventListener('keypress', (event)=>{
     if (event.key === 'w' || event.key === 'W') {
         drone.direction.w = true;
@@ -172,15 +174,19 @@ window.addEventListener('keyup', (event)=>{
     }
 });
 
+function emit_light_particles(){
+    let drone_light = document.querySelector('.drone_light');
+    drone_light.style = 'top: '+ (1-Math.abs(drone.y + TOP )/(TOP * 2)) * window.innerHeight +'px; left: '+ (Math.abs(drone.x + RIGHT * aspect )/(RIGHT * aspect * 2)) * window.innerWidth +'px;';    
+}
+
 //Animation loop
 function animate() {
     drone.move();
     drone.idle();
     drone.animate_flame();
     
-    //emitted light
-    let drone_light = document.querySelector('.drone_light');
-    drone_light.style = 'top: '+ (1-Math.abs(drone.y + TOP )/(TOP * 2)) * window.innerHeight +'px; left: '+ (Math.abs(drone.x + RIGHT * aspect )/(RIGHT * aspect * 2)) * window.innerWidth +'px;';
+    emit_light_particles();
+
     
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
@@ -189,3 +195,5 @@ function animate() {
 window.onload = ()=> {
     animate();
 }
+window.onresize = ()=>{location.reload()};
+
