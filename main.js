@@ -49,7 +49,7 @@ class Drone {
     };
 
     constructor(scene) {
-        this.x = 0;
+        this.x = 6;
         this.y = 0;
         this.z = 0;
         this.speed = 0.2;
@@ -134,6 +134,8 @@ class Drone {
     collides(){
         if(this.x < LEFT * aspect){ this.x = LEFT * aspect; return true;}
         if(this.x > RIGHT * aspect){ this.x = RIGHT * aspect; return true;}
+        if(this.y > TOP){this.y = TOP; return true;}
+        if(this.y < BOTTOM){ this.y = BOTTOM; return true;}
         return false;
     }
 }
@@ -186,7 +188,7 @@ function animate() {
     drone.animate_flame();
     
     emit_light_particles();
-
+    
     
     renderer.render(scene, camera);
     requestAnimationFrame(animate);

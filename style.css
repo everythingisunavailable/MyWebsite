@@ -1,16 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 body{
-    margin: 0; 
+    margin: 0;
+    padding: 0;
     background-color: rgb(26, 26, 26);
+    color: #ffeaea;
+    font-family: 'Roboto', serif;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
 }
 
+h1{
+    all: unset;
+    font-weight: 500;
+    font-size: 8rem;
+}
+.name{
+    background: linear-gradient(to right, #ff1d1d, #67b0fe);
+    background-clip: text;
+    color: transparent;
+}
+h4{
+    all: unset;
+    font-weight: 400;
+    font-size: 2rem;
+}
+p{
+    font-weight: 400;
+    font-size: large;
+}
+h2{
+    all: unset;
+    font-weight: 500;
+    font-size: 3rem;
+}
+
+.basic-button{
+    width: fit-content;
+    height: 3rem;
+    border: none;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: large;
+    background-color: #ff1d1d;
+    color: white;
+    box-shadow: 0 0 5px 2px black;
+    cursor: pointer;
+}
+nav{
+    width: 100%;
+    height: 4rem;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid rgb(60, 60, 60);
+    background-color: rgba(26, 26, 26, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: 200;
+}
+.button-group-wrapper{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+ul{
+    all: unset;
+    list-style: none;
+    width: 20rem;
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 5rem;
+}
+a{
+    all: unset;
+    cursor: pointer;
+}
+nav a{
+    font-weight: 500;
+}
+nav a:hover{
+    color: #67b0fe;
+}
+.right-button-group{
+    margin-right: 5rem;
+}
+
+.cover{
+    position: relative;
+    height: 100vh;
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+/* orange line */
+.cover::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 15%;
+    height: 3px;
+    background-color: #ff1d1d;
+}
+.cover::before{
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #ff1d1d;
+}
+.description::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 3px;
+    height: 50%;
+    background-color: #ff1d1d;
+}
+.description{
+    max-width: 45%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 5rem;
+}
+
+.projects{
+    position: relative;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.title{
+    padding: 1rem;
+}
+.wrapper{
+    border: 1px solid rgb(60, 60, 60);
+    border-radius: 5px;
+    background-color: rgb(30, 30, 30);
+
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 5rem;
+}
+.project-item{
+    border: 1px solid rgb(60, 60, 60);
+    width: 22rem;
+    height: 15rem;
+    margin: 0.5rem;
+    overflow: hidden;
+    filter: brightness(0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+img{
+    width: 100%;
+}
+.project-item::after{
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: hide 0.5s ease-in forwards;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.742));
+    backdrop-filter: blur(3px);
+}
+.project-item:hover::after{
+    animation: show 0.5s ease-out forwards;
+}
+@keyframes show{
+    100%{
+        top: 0;
+    }
+}
+.project-description{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: 1;
+}
+.project-description:hover{
+    opacity: 1;
+}
+
+
+
+/* orange line */
+.projects::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background-color: #ff1d1d;
+}
+.projects::before{
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #ff1d1d;
+}
+
+
+
+
+
+
+
+
+/*drone stuff*/
 canvas{
-    background-color: transparent;
+    pointer-events: none !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
     z-index: 100;
 }
 .drone_light{
     position: absolute;
     box-shadow: 0 0 10vw 5vw rgb(116, 116, 245);
     transform: translateY(5vw);
-    z-index: -100;
 }
