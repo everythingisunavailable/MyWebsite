@@ -141,7 +141,7 @@ class Drone {
 }
 
 
-let drone = new Drone(scene);
+let drone = null;
 
 window.addEventListener('keypress', (event)=>{
     if (event.key === 'w' || event.key === 'W') {
@@ -176,6 +176,8 @@ window.addEventListener('keyup', (event)=>{
     }
 });
 
+
+
 function emit_light_particles(){
     let drone_light = document.querySelector('.drone_light');
     drone_light.style = 'top: '+ (1-Math.abs(drone.y + TOP )/(TOP * 2)) * window.innerHeight +'px; left: '+ (Math.abs(drone.x + RIGHT * aspect )/(RIGHT * aspect * 2)) * window.innerWidth +'px;';    
@@ -183,21 +185,25 @@ function emit_light_particles(){
 
 //Animation loop
 function animate() {
-    drone.move();
-    drone.idle();
-    drone.animate_flame();
-    
-    emit_light_particles();
+    if (drone) {
+        drone.move();
+        drone.idle();
+        drone.animate_flame();
+        
+        emit_light_particles();    
+    }
     
     
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
 
-window.onload = ()=> {
-    animate();
-}
-window.onresize = ()=>{location.reload()};
+window.onload = ()=>{if(window.innerWidth > 1100) drone = new Drone(scene); animate();}
+
+let prev_width = window.innerWidth;
+window.onresize = ()=>{if(window.innerWidth != prev_width) location.reload();};
+
+window.onbeforeunload = ()=>{window.scrollTo(0, 0);}//scrolles to top befre refreshing
 
 //button styling
 let buttons = document.querySelectorAll('.contact-button');
@@ -213,3 +219,35 @@ buttons.forEach(button => {
         button.style = 'background : radial-gradient(circle at '+x+'px '+y+'px,rgba(255, 255, 255, 0.2),rgba(255, 255, 255, 0.0));';
     })
 });
+
+//navbar link targets
+const projects = document.getElementById('projects');
+const about = document.getElementById('about');
+const contact = document.getElementById('contact');
+
+let projects_y = projects.getBoundingClientRect().top;
+let about_y = about.getBoundingClientRect().top;
+let contact_y = contact.getBoundingClientRect().top;
+
+window.onscroll = ()=>{
+    if (window.scrollY > projects_y-200 && window.scrollY < about_y-200) {
+        document.getElementById('nav-project').style = 'color: #67b0fe;';
+        document.getElementById('nav-about').style = 'color: #ffeaea;';
+        document.getElementById('nav-contact').style = 'color: #ffeaea;';
+    }
+    else if (window.scrollY > about_y-200 && window.scrollY < contact_y-200) {
+        document.getElementById('nav-about').style = 'color: #67b0fe;';
+        document.getElementById('nav-project').style = 'color: #ffeaea;';
+        document.getElementById('nav-contact').style = 'color: #ffeaea;';
+    }
+    else if (window.scrollY > contact_y-500) {
+        document.getElementById('nav-contact').style = 'color: #67b0fe;';
+        document.getElementById('nav-project').style = 'color: #ffeaea;';
+        document.getElementById('nav-about').style = 'color: #ffeaea;';
+    }
+    else{
+        document.getElementById('nav-contact').style = 'color: #ffeaea;';
+        document.getElementById('nav-project').style = 'color: #ffeaea;';
+        document.getElementById('nav-about').style = 'color: #ffeaea;';
+    }
+}

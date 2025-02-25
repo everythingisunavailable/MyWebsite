@@ -17,6 +17,7 @@ h1{
     all: unset;
     font-weight: 500;
     font-size: 8rem;
+    width: fit-content;
 }
 .name{
     background: linear-gradient(to right, #ff1d1d, #67b0fe);
@@ -54,6 +55,19 @@ h2{
     box-shadow: 0 0 5px 2px black;
     cursor: pointer;
 }
+.basic-button:hover{
+    animation: wobble 1s ease infinite;
+}
+@keyframes wobble{
+    0%{transform: rotate(0deg);}
+    20%{transform: rotate(10deg);}
+    40%{transform: rotate(-10deg);}
+    60%{transform: rotate(5deg);}
+    80%{transform: rotate(-5deg);}
+    90%{transform: rotate(0deg);}
+    100%{transform: rotate(0deg);}
+}
+
 nav{
     width: 100%;
     height: 4rem;
@@ -130,10 +144,11 @@ nav a:hover{
     background-color: #ff1d1d;
 }
 .description{
-    max-width: 45%;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     margin-left: 5rem;
+
 }
 
 .projects, .about, .contact{
@@ -235,10 +250,13 @@ img{
     display: flex;
     flex-direction: column;
     margin: 3rem;
+    line-height: 30px;
+    font-weight: 400;
 }
 .image{
     width: 30rem;
     border: 2px solid rgb(60, 60, 60);
+    border-radius: 5px;
     margin: 3rem;
 }
 .skills{
@@ -252,6 +270,7 @@ img{
     background-color: rgb(40, 40, 40);
     border-radius: 100px;
     margin-right: 1rem;
+    margin-top: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -311,6 +330,92 @@ img{
     background-color: #ff1d1d;
 }
 
+.highlight{
+    color: #67b0fee0;
+    font-weight: bold;
+}
+
+footer{
+    width: 100%;
+    height: 10rem;
+    background: linear-gradient(transparent, black);
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+.copyright{
+    color: gray;
+    margin-bottom: 0.5rem;
+}
+
+@media only screen and (max-width: 650px){
+    ul{
+        margin-left: 0;
+    }
+    .right-button-group{
+        margin-right: 1rem;
+    }
+    h1{
+        font-size: 20vw;
+    }
+}
+
+@media only screen and (max-width: 850px){
+    .description{
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .cover::after, .description::after{
+        display: none;
+    }
+    .cover{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    p{
+        font-size: medium;
+    }
+    .about-description{
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        text-align: center;
+    }
+    .image{
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0;
+    }
+    .skills{
+        justify-content: center;
+    }
+
+}
+
+@media only screen and (max-width: 460px){
+    h1{
+        font-size: 18vw;
+    }
+    h2{
+        font-size: 2rem;
+    }
+    h4{
+        font-size: 1.5rem;
+    }
+    ul{
+        width: fit-content;
+    }
+    li{
+        margin-left: 0.7rem;
+    }
+    nav .basic-button{
+        padding: 5px;
+        height: 2rem;
+    }
+}
+
 
 /*drone stuff*/
 canvas{
@@ -322,8 +427,21 @@ canvas{
     height: 100vh;
     z-index: 100;
 }
-.drone_light{
-    position: absolute;
-    box-shadow: 0 0 10vw 5vw rgb(116, 116, 245);
-    transform: translateY(5vw);
+.hint{
+    display: none;
+}
+@media only screen and (min-width: 1100px){
+    .drone_light{
+        position: absolute;
+        box-shadow: 0 0 10vw 5vw rgb(116, 116, 245);
+        transform: translateY(5vw);
+    }
+    .hint{
+        display: block;
+        position: absolute;
+        top: 47%;
+        right: 2%;
+        font-style: italic;
+        opacity: 0.5;
+    }
 }
