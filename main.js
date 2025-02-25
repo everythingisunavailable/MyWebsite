@@ -199,3 +199,17 @@ window.onload = ()=> {
 }
 window.onresize = ()=>{location.reload()};
 
+//button styling
+let buttons = document.querySelectorAll('.contact-button');
+buttons.forEach(button => {
+    button.onmouseleave = ()=>{
+        button.style = 'background : none';
+    }
+
+    button.addEventListener('mousemove', (event)=>{
+        let x = event.clientX - button.getBoundingClientRect().left;
+        let y = event.clientY - button.getBoundingClientRect().top;
+
+        button.style = 'background : radial-gradient(circle at '+x+'px '+y+'px,rgba(255, 255, 255, 0.2),rgba(255, 255, 255, 0.0));';
+    })
+});
