@@ -30,7 +30,7 @@ scene.add(ambient_light);
 
 
 
-class Drone {
+class Drone{
     drone; // The 3D model of the drone
     flame;
     animation_frames;
@@ -39,7 +39,11 @@ class Drone {
     x;
     y;
     z;
-    speed;
+    min_speed;
+    max_speed;
+    h_speed;
+    v_speed;
+    a;
 
     direction = {
         a: false, // Left
@@ -49,13 +53,18 @@ class Drone {
     };
 
     constructor(scene) {
-        this.x = 6;
-        this.y = 0;
-        this.z = 0;
-        this.speed = 0.2;
+        this.x = 6.0;
+        this.y = 0.0;
+        this.z = 0.0;
+        this.max_speed = 0.2;
+        this.min_speed = -0.2;
+        this.h_speed = 0.0;
+        this.v_speed = 0.0;
+        this.a = 0.01;
         this.animation_frames = 16;
         this.count = 0;
         this.reverse = false;
+        this.last_direction = '';
 
         const loader = new GLTFLoader();
         this.drone = null;
@@ -84,21 +93,33 @@ class Drone {
         });
     }
 
-    // Example method to move the drone
-    move() {
-
-        if (this.direction.a && !this.collides()) this.x -= this.speed; // Move left
-        if (this.direction.d && !this.collides()) this.x += this.speed; // Move right
-        if (this.direction.w && !this.collides()) this.y += this.speed; // Move up
-        if (this.direction.s && !this.collides()) this.y -= this.speed; // Move down
-        
+    move(){
+        //change vertical and horizontal speed values
+        if (this.direction.a && this.h_speed > this.min_speed) this.h_speed -= this.a;
+        if (this.direction.d && this.h_speed < this.max_speed) this.h_speed += this.a;
+        if (this.direction.w && this.v_speed < this.max_speed) this.v_speed += this.a;
+        if (this.direction.s && this.v_speed > this.min_speed) this.v_speed -= this.a;
+        //change vertical and horizontal speed values to 0
+        if (!this.direction.a && !this.direction.d && !this.direction.w && !this.direction.s){
+            const epsilon = 0.01;
+            //horizontal
+            if (Math.abs(this.h_speed) < epsilon) this.h_speed = 0;
+            else if (this.h_speed < 0) this.h_speed += this.a;
+            else if(this.h_speed > 0) this.h_speed -= this.a;
+            //vertical
+            if (Math.abs(this.v_speed) < epsilon) this.v_speed = 0;
+            else if (this.v_speed < 0) this.v_speed += this.a;
+            else if(this.v_speed > 0) this.v_speed -= this.a;
+        }
+        //change coordinates
+        if (!this.collides()) this.x += this.h_speed; this.y += this.v_speed;
         // Update the drone's position
         if (this.drone) {
             this.drone.rotation.y += 0.1;
             this.drone.position.set(this.x, this.y, this.z);
         }
+    
     }
-
     idle(){
         if (!this.direction.a && !this.direction.d && !this.direction.w && !this.direction.s && this.drone){
             //rotate
@@ -139,7 +160,6 @@ class Drone {
         return false;
     }
 }
-
 
 let drone = null;
 
@@ -230,22 +250,23 @@ let about_y = about.getBoundingClientRect().top;
 let contact_y = contact.getBoundingClientRect().top;
 
 window.onscroll = ()=>{
-    if (window.scrollY > projects_y-200 && window.scrollY < about_y-200) {
+    console.log(window.scrollY, contact_y-300);
+    if (window.scrollY > projects_y-200) {
         document.getElementById('nav-project').style = 'color: #67b0fe;';
         document.getElementById('nav-about').style = 'color: #ffeaea;';
         document.getElementById('nav-contact').style = 'color: #ffeaea;';
     }
-    else if (window.scrollY > about_y-200 && window.scrollY < contact_y-200) {
+    if (window.scrollY > about_y-200) {
         document.getElementById('nav-about').style = 'color: #67b0fe;';
         document.getElementById('nav-project').style = 'color: #ffeaea;';
         document.getElementById('nav-contact').style = 'color: #ffeaea;';
     }
-    else if (window.scrollY > contact_y-500) {
+    if (window.scrollY > contact_y-500) {
         document.getElementById('nav-contact').style = 'color: #67b0fe;';
         document.getElementById('nav-project').style = 'color: #ffeaea;';
         document.getElementById('nav-about').style = 'color: #ffeaea;';
     }
-    else{
+    if (window.scrollY < projects_y-200) {
         document.getElementById('nav-contact').style = 'color: #ffeaea;';
         document.getElementById('nav-project').style = 'color: #ffeaea;';
         document.getElementById('nav-about').style = 'color: #ffeaea;';
