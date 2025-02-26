@@ -250,7 +250,6 @@ let about_y = about.getBoundingClientRect().top;
 let contact_y = contact.getBoundingClientRect().top;
 
 window.onscroll = ()=>{
-    console.log(window.scrollY, contact_y-300);
     if (window.scrollY > projects_y-200) {
         document.getElementById('nav-project').style = 'color: #67b0fe;';
         document.getElementById('nav-about').style = 'color: #ffeaea;';
