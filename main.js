@@ -54,7 +54,7 @@ class Drone{
 
     constructor(scene) {
         this.x = 1.7;
-        this.y = 6.9;
+        this.y = 7.4;
         this.z = 0.0;
         this.max_speed = 0.1;
         this.min_speed = -0.1;
@@ -101,7 +101,7 @@ class Drone{
         if (this.direction.s && this.v_speed > this.min_speed) this.v_speed -= this.a;
         //change vertical and horizontal speed values to 0
         if (!this.direction.a && !this.direction.d && !this.direction.w && !this.direction.s){
-            const epsilon = 0.01;
+            const epsilon = 0.004;
             //horizontal
             if (Math.abs(this.h_speed) < epsilon) this.h_speed = 0;
             else if (this.h_speed < 0) this.h_speed += this.a;
@@ -110,12 +110,12 @@ class Drone{
             if (Math.abs(this.v_speed) < epsilon) this.v_speed = 0;
             else if (this.v_speed < 0) this.v_speed += this.a;
             else if(this.v_speed > 0) this.v_speed -= this.a;
-
         }
-        else{
-            //if its moving, scroll, with it;
+
+        if (this.v_speed != 0) {
             window.scrollTo(0, (1-Math.abs(this.y + TOP )/(TOP * 2)) * document.body.clientHeight - window.innerHeight/2);
         }
+
         //change coordinates
         if (!this.collides()) this.x += this.h_speed; this.y += this.v_speed;
         // Update the drone's position
@@ -208,6 +208,7 @@ function emit_light_particles(){
     drone_light.style = 'top: '+ (1-Math.abs(drone.y + TOP )/(TOP * 2)) * document.body.clientHeight +'px; left: '+ (Math.abs(drone.x + RIGHT * aspect )/(RIGHT * aspect * 2)) * window.innerWidth +'px;';
 }
 
+
 //Animation loop
 function animate() {
     if (drone) {
@@ -215,7 +216,7 @@ function animate() {
         drone.idle();
         drone.animate_flame();
         
-        emit_light_particles();    
+        emit_light_particles();   
     }
     
     
