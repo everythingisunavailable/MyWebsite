@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.146/examples/jsm/loaders/GLTFLoader.js';
 const scene = new THREE.Scene();
-const aspect = window.innerWidth / window.innerHeight;
+const aspect = window.innerWidth / document.body.clientHeight; 
 const LEFT = -10;
 const RIGHT = 10;
 const TOP = 10;
@@ -17,7 +17,7 @@ const camera = new THREE.OrthographicCamera(
 camera.position.z = 10;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth, document.body.clientHeight);
 document.body.appendChild(renderer.domElement);
 
 // Add lighting
@@ -53,14 +53,14 @@ class Drone{
     };
 
     constructor(scene) {
-        this.x = 6.0;
-        this.y = 0.0;
+        this.x = 1.7;
+        this.y = 6.9;
         this.z = 0.0;
-        this.max_speed = 0.2;
-        this.min_speed = -0.2;
+        this.max_speed = 0.1;
+        this.min_speed = -0.1;
         this.h_speed = 0.0;
         this.v_speed = 0.0;
-        this.a = 0.01;
+        this.a = 0.005;
         this.animation_frames = 16;
         this.count = 0;
         this.reverse = false;
@@ -110,6 +110,11 @@ class Drone{
             if (Math.abs(this.v_speed) < epsilon) this.v_speed = 0;
             else if (this.v_speed < 0) this.v_speed += this.a;
             else if(this.v_speed > 0) this.v_speed -= this.a;
+
+        }
+        else{
+            //if its moving, scroll, with it;
+            window.scrollTo(0, (1-Math.abs(this.y + TOP )/(TOP * 2)) * document.body.clientHeight - window.innerHeight/2);
         }
         //change coordinates
         if (!this.collides()) this.x += this.h_speed; this.y += this.v_speed;
@@ -200,7 +205,7 @@ window.addEventListener('keyup', (event)=>{
 
 function emit_light_particles(){
     let drone_light = document.querySelector('.drone_light');
-    drone_light.style = 'top: '+ (1-Math.abs(drone.y + TOP )/(TOP * 2)) * window.innerHeight +'px; left: '+ (Math.abs(drone.x + RIGHT * aspect )/(RIGHT * aspect * 2)) * window.innerWidth +'px;';    
+    drone_light.style = 'top: '+ (1-Math.abs(drone.y + TOP )/(TOP * 2)) * document.body.clientHeight +'px; left: '+ (Math.abs(drone.x + RIGHT * aspect )/(RIGHT * aspect * 2)) * window.innerWidth +'px;';
 }
 
 //Animation loop
