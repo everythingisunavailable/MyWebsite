@@ -100,12 +100,15 @@ class Drone{
         if (this.direction.w && this.v_speed < this.max_speed) this.v_speed += this.a;
         if (this.direction.s && this.v_speed > this.min_speed) this.v_speed -= this.a;
         //change vertical and horizontal speed values to 0
-        if (!this.direction.a && !this.direction.d && !this.direction.w && !this.direction.s){
+        if (!this.direction.a && !this.direction.d){
             const epsilon = 0.004;
             //horizontal
             if (Math.abs(this.h_speed) < epsilon) this.h_speed = 0;
             else if (this.h_speed < 0) this.h_speed += this.a;
             else if(this.h_speed > 0) this.h_speed -= this.a;
+        }
+        if (!this.direction.w && !this.direction.s) {
+            const epsilon = 0.004;
             //vertical
             if (Math.abs(this.v_speed) < epsilon) this.v_speed = 0;
             else if (this.v_speed < 0) this.v_speed += this.a;
