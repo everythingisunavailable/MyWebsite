@@ -55,7 +55,7 @@ h2{
     box-shadow: 0 0 5px 2px black;
     cursor: pointer;
 }
-.basic-button:hover{
+.basic-button:hover, .basic-button:focus{
     animation: wobble 1s ease infinite;
 }
 @keyframes wobble{
@@ -435,6 +435,7 @@ canvas{
         position: absolute;
         box-shadow: 0 0 10vw 5vw rgb(116, 116, 245);
         transform: translateY(5vw);
+        z-index: 90;
     }
     .hint{
         display: block;
